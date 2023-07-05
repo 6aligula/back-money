@@ -1,6 +1,6 @@
 from flask import Flask, request, jsonify
-from datetime import datetime
 import json
+from datetime import datetime
 
 app = Flask(__name__)
 
@@ -10,17 +10,22 @@ def save_data():
     if not data:
         return jsonify({'message': 'No data provided'}), 400
 
+    # Get month and year from the data
     try:
-        # Convierte el primer id en un objeto datetime (asumiendo que el id es un timestamp en milisegundos)
-        date = datetime.fromtimestamp(data[0]['value'][0]['id'] / 1000)  
-        # Extrae el año y el mes del objeto datetime
-        year = date.year
+        # Assuming the 'id' field is a timestamp
+        timestamp = data[0]['value'][0]['id']
+        date = datetime.fromtimestamp(timestamp/1000)  # Convert timestamp to seconds
         month = date.strftime('%B')
+        year = date.year
 
-        # Genera el nombre del archivo usando el año y el mes
-        file_name = f'{month}_{year}.json'
+        filename = f'{month}_{year}.json'  # This will give a filename like 'July_2023.json'
+    except KeyError:
+        return jsonify({'message': 'Invalid data format'}), 400
+    except Exception as e:
+        return jsonify({'message': 'An error occurred while processing data: ' + str(e)}), 400
 
-        with open(file_name, 'w') as f:  # abre el archivo con el nombre generado en modo de escritura
+    try:
+        with open(filename, 'w') as f:  # abre el archivo en modo de escritura
             json.dump(data, f)  # escribe los datos en el archivo
         return jsonify({'message': 'Data saved successfully'}), 200
     except Exception as e:
