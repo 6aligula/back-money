@@ -14,7 +14,7 @@ def save_data():
     # Get month and year from the data
     try:
         # Assuming the 'id' field is a timestamp
-        timestamp = data[0]['value'][0]['id']
+        timestamp = data[2]['value'][2]['id']
         date = datetime.fromtimestamp(timestamp/1000)  # Convert timestamp to seconds
         month = date.strftime('%B')
         year = date.year
