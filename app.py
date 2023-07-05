@@ -30,7 +30,7 @@ def save_data():
     try:
         with open(filename, 'w') as f:  # abre el archivo en modo de escritura
             json.dump(data, f)  # escribe los datos en el archivo
-        return jsonify({'message': 'Datos guardados correctamente'}), 200
+        return jsonify({'message': 'Datos guardados correctamente en el servidor'}), 200
     except Exception as e:
         return jsonify({'message': 'An error occurred while saving data: ' + str(e)}), 500
 
