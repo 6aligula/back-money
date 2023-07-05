@@ -6,7 +6,8 @@ app = Flask(__name__)
 
 @app.route('/saveData', methods=['POST'])
 def save_data():
-    data = request.get_json()  # obtener los datos enviados en la solicitud POST
+    data = request.get_json()
+    print(data)
     if not data:
         return jsonify({'message': 'No data provided'}), 400
 
@@ -20,8 +21,10 @@ def save_data():
 
         filename = f'{month}_{year}.json'  # This will give a filename like 'July_2023.json'
     except KeyError:
-        return jsonify({'message': 'Invalid data format'}), 400
+        print(f"Data received: {data}")
+        return jsonify({'message': 'Invalid data format. Data should have an "id" key.'}), 400
     except Exception as e:
+        print(f"Data received: {data}")
         return jsonify({'message': 'An error occurred while processing data: ' + str(e)}), 400
 
     try:
